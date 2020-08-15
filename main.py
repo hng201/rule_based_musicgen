@@ -4,6 +4,7 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 import music21
+import chordprog_gen
 
 us = music21.environment.UserSettings()
 # Set path for software to open music scores
@@ -18,5 +19,5 @@ def display_chord():
 
 
 if __name__ == '__main__':
-    display_chord()
+    chordprog_gen.generate_chord_progression()
 
