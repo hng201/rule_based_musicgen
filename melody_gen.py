@@ -212,8 +212,8 @@ def select_passing_note(chord, note):
                 melody_stream.append(music21.note.Note("F#"))
         # If the note is B
         if note == 'B':
-            # Add the passing note F to the melody stream
-            melody_stream.append(music21.note.Note("F"))
+            # Add the passing note A to the melody stream
+            melody_stream.append(music21.note.Note("A"))
     if chord == 'iv':
         # If the note is F
         if note == 'F':
