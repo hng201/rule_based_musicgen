@@ -20,27 +20,41 @@ def generate_melody(chord_progression):
 def choose_note(chord):
     # Variable to store current note
     current_note = ""
-    passing_note = False
+    pass_note = False
+    is_q = False
+    q_count = 1
     # Chooses 4 crochet notes
     for y in range(0, 4):
-        if current_note == '' or y == 3 or passing_note is True:
+        if current_note == '' or y == 3 or pass_note is True:
             # Call method to select a triad note
-            current_note, passing_note = select_triad_note(chord, current_note, passing_note)
+            current_note, pass_note, is_q, q_count = select_triad_note(chord, current_note, pass_note, is_q, q_count)
             print(y)
         else:
             # Generate a random number between 0 and 1 to decide whether next note is a triad note or a passing note
-            num = random.randint(0, 1)
+            num = random.randint(0, 3)
+            # If num is 0, add a triad note as a crochet note
             if num == 0:
                 # Call method to select a triad note
-                current_note, passing_note = select_triad_note(chord, current_note, passing_note)
+                current_note, pass_note, is_q, q_count = select_triad_note(chord, current_note, pass_note, is_q, q_count)
                 print(y)
+            # If num is 1, add a accented passing note as a crochet note
             if num == 1:
                 # Call method to select a passing note
-                current_note, passing_note = select_passing_note(chord, current_note)
+                current_note, pass_note, is_q, q_count = select_passing_note(chord, current_note, is_q, q_count)
                 print(y)
+            # If num is 2, add a triad note followed by an unaccented note as quaver notes
+            if num == 2:
+                is_q = True
+                current_note, pass_note, is_q, q_count = select_triad_note(chord, current_note, pass_note, is_q, q_count)
+                current_note, pass_note, is_q, q_count = select_passing_note(chord, current_note, is_q, q_count)
+            # If num is 3, add an accented passing note followed by a triad note as quaver notes
+            if num == 3:
+                is_q = True
+                current_note, pass_note, is_q, q_count = select_passing_note(chord, current_note, is_q, q_count)
+                current_note, pass_note, is_q, q_count = select_triad_note(chord, current_note, pass_note, is_q, q_count)
 
 
-def select_triad_note(chord, current_note, passing_note):
+def select_triad_note(chord, current_note, passing_note, is_quaver, q_count):
     # Variable to store the selected note
     note = ''
     # Variable to store note to add
@@ -259,13 +273,23 @@ def select_triad_note(chord, current_note, passing_note):
                 else:
                     new_note = music21.note.Note("F")
                     note = "F"
-    melody_stream.append(new_note)
+    if is_quaver is True:
+        quaver = music21.duration.Duration('eighth')
+        new_note.duration = quaver
+        melody_stream.append(new_note)
+        if q_count == 2:
+            q_count = 1
+            is_quaver = False
+        else:
+            q_count = 2
+    else:
+        melody_stream.append(new_note)
     print(note + " triad note")
     passing_note = False
-    return note, passing_note
+    return note, passing_note, is_quaver, q_count
 
 
-def select_passing_note(chord, current_note):
+def select_passing_note(chord, current_note, is_quaver, q_count):
     note = ''
     new_note = ''
     if chord == 'i':
@@ -403,7 +427,17 @@ def select_passing_note(chord, current_note):
             # Add the passing note E to the melody stream
             new_note = music21.note.Note("E")
             note = "E"
-    melody_stream.append(new_note)
+    if is_quaver is True:
+        quaver = music21.duration.Duration('eighth')
+        new_note.duration = quaver
+        melody_stream.append(new_note)
+        if q_count == 2:
+            q_count = 1
+            is_quaver = False
+        else:
+            q_count = 2
+    else:
+        melody_stream.append(new_note)
     print(note + " passing note")
     passing_note = True
-    return note, passing_note
+    return note, passing_note, is_quaver, q_count
