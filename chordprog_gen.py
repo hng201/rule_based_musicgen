@@ -1,5 +1,4 @@
-import random
-import music21
+import random, music21
 
 # Array to store generated chord progression
 new_chord_progression = []
@@ -87,14 +86,13 @@ def generate_chord_progression():
                 x += 1
     # Display the generated chord progression
     print(new_chord_progression)
-    # Add C Major chord progression notes to the generated chord progression
-    cmaj_chord_progression(new_chord_progression)
+    return new_chord_progression
 
 
 # Adds C Major chord progression notes
 def cmaj_chord_progression(chord_progression_structure):
     # Create new stream to store chord progression notes
-    chord_prog_stream = music21.stream.Stream()
+    chord_prog_stream = music21.stream.Part()
     # Variable to store bass clef value
     bass_clef = music21.clef.BassClef()
     # Add the base clef to the chord progression stream
@@ -158,5 +156,4 @@ def cmaj_chord_progression(chord_progression_structure):
             b_dim_chord.duration.type = "whole"
             # Add chord to stream
             chord_prog_stream.append(b_dim_chord)
-    # Display chord progression in MusicXML format
-    chord_prog_stream.show()
+    return chord_prog_stream
