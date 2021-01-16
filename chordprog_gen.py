@@ -5,10 +5,10 @@ new_chord_progression = []
 
 
 def generate_chord_progression():
-    x = random.randint(0, 1)
-
+    #x = random.randint(0, 1)
+    x = 0
     if x == 0:
-        generate_major_chord_progression()
+        return generate_major_chord_progression()
     else:
         generate_minor_chord_progression()
 
@@ -95,7 +95,7 @@ def generate_major_chord_progression():
                 x += 1
     # Display the generated chord progression
     print("major: ", new_chord_progression)
-    return new_chord_progression
+    return gmaj_chord_progression(new_chord_progression)
 
 
 # Adds C Major chord progression notes
@@ -118,7 +118,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(c_maj_chord)
         # If chord = 'ii'
-        if x == 'ii':
+        elif x == 'ii':
             # Create new chord and assign D minor triad notes
             d_min_chord = music21.chord.Chord(["D3", "F3", "A3"])
             # Set chord duration to semibreve/whole
@@ -126,7 +126,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(d_min_chord)
         # If chord = 'iii'
-        if x == 'iii':
+        elif x == 'iii':
             # Create new chord and assign E minor triad notes
             e_min_chord = music21.chord.Chord(["E3", "G3", "B3"])
             # Set chord duration to semibreve/whole
@@ -134,7 +134,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(e_min_chord)
         # If chord = 'iv'
-        if x == 'iv':
+        elif x == 'iv':
             # Create new chord and assign F major triad notes
             f_maj_chord = music21.chord.Chord(["F2", "A2", "C3"])
             # Set chord duration to semibreve/whole
@@ -142,7 +142,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(f_maj_chord)
         # If chord = 'v'
-        if x == 'v':
+        elif x == 'v':
             # Create new chord and assign G major triad notes
             g_maj_chord = music21.chord.Chord(["G2", "B2", "D3"])
             # Set chord duration to semibreve/whole
@@ -150,7 +150,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(g_maj_chord)
         # If chord = 'vi'
-        if x == 'vi':
+        elif x == 'vi':
             # Create new chord and assign A minor triad notes
             a_min_chord = music21.chord.Chord(["A2", "C3", "E3"])
             # Set chord duration to semibreve/whole
@@ -158,7 +158,7 @@ def cmaj_chord_progression(chord_progression_structure):
             # Add chord to stream
             chord_prog_stream.append(a_min_chord)
         # If chord = 'vii'
-        if x == 'vii_dim':
+        elif x == 'vii_dim':
             # Create new chord and assign B diminished triad notes
             b_dim_chord = music21.chord.Chord(["B2", "D3", "F3"])
             # Set chord duration to semibreve/whole
@@ -167,13 +167,52 @@ def cmaj_chord_progression(chord_progression_structure):
             chord_prog_stream.append(b_dim_chord)
     return chord_prog_stream
 
+def gmaj_chord_progression(chord_progression_structure):
+    chord_prog_stream = music21.stream.Part()
+    bass_clef = music21.clef.BassClef()
+    chord_prog_stream.append(bass_clef)
+    key_gmaj = music21.key.KeySignature(1)
+    chord_prog_stream.append(key_gmaj)
+
+    for x in chord_progression_structure:
+        if x == 'i':
+            g_maj_chord = music21.chord.Chord(["G2", "B2", "D3"])
+            g_maj_chord.duration.type = "whole"
+            chord_prog_stream.append(g_maj_chord)
+        elif x == 'ii':
+            a_minor_chord = music21.chord.Chord(["A2", "C3", "E3"])
+            a_minor_chord.duration.type = "whole"
+            chord_prog_stream.append(a_minor_chord)
+        elif x == 'iii':
+            b_minor_chord = music21.chord.Chord(["B2", "D3", "F#3"])
+            b_minor_chord.duration.type = "whole"
+            chord_prog_stream.append(b_minor_chord)
+        elif x == 'iv':
+            c_maj_chord = music21.chord.Chord(["C3", "E3", "G3"])
+            c_maj_chord.duration.type = "whole"
+            chord_prog_stream.append(c_maj_chord)
+        elif x == 'v':
+            d_maj_chord = music21.chord.Chord(["D3", "F#3", "A3"])
+            d_maj_chord.duration.type = "whole"
+            chord_prog_stream.append(d_maj_chord)
+        elif x == 'vi':
+            e_min_chord = music21.chord.Chord(["E3", "G3", "B3"])
+            e_min_chord.duration.type = "whole"
+            chord_prog_stream.append(e_min_chord)
+        elif x == 'vii_dim':
+            fsharp_dim_chord = music21.chord.Chord(["F#2", "A2", "C3"])
+            fsharp_dim_chord.duration.type = "whole"
+            chord_prog_stream.append(fsharp_dim_chord)
+    return chord_prog_stream
+
+
 def generate_minor_chord_progression():
     new_chord_progression.append('i')
 
     i = random.randint(0, 6)
 
     if i == 0:
-        new_chord_progression.append('ii')
+        new_chord_progression.append('ii_dim')
     elif i == 1:
         new_chord_progression.append('iii')
     elif i == 2:
