@@ -10,13 +10,13 @@ if __name__ == '__main__':
     # Generate a chord progression structure and assign the value to variable chord_progression
     chord_progression = chordprog_gen.generate_chord_progression()
     # Generate Cmaj chord progression and assign the value to variable p_accomp
-    p_accomp = chordprog_gen.cmaj_chord_progression(chord_progression)
+    #p_accomp = chordprog_gen.cmaj_chord_progression(chord_progression)
     # Generate a melody and assign the value to variable p_melody
-    p_melody = melody_gen.generate_melody(chord_progression)
+    #p_melody = melody_gen.generate_melody(chord_progression)
     # Add the melody part to the stream
-    stream.append(p_melody)
+   # stream.append(p_melody)
     # Add the accompaniment part to the stream
-    stream.append(p_accomp)
+    #stream.append(p_accomp)
     # Show the stream in MusicXML format
-    stream.show()
+   # stream.show()
 
