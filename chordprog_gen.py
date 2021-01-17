@@ -2,17 +2,18 @@ import random, music21
 
 # Array to store generated chord progression
 new_chord_progression = []
-major = False
+
 
 def generate_chord_progression():
-    #x = random.randint(0, 1)
-    x = 0
+    x = random.randint(0, 1)
     if x == 0:
         generate_major_chord_progression()
         major = True
     else:
         generate_minor_chord_progression()
+        major = False
     return new_chord_progression, major
+
 
 # Method to generate new chord progression
 # NOTE: current chord progression length is not restricted
@@ -190,5 +191,3 @@ def generate_minor_chord_progression():
             x += 1
 
     print("Minor: ", new_chord_progression)
-    return new_chord_progression
-
