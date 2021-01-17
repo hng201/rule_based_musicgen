@@ -71,7 +71,7 @@ def generate_major_chord_progression():
                 new_chord_progression.append(5)
                 x += 1
             else:
-                # Add chord 'vii _dim' as the next chord
+                # Add chord 'vii_dim' as the next chord
                 new_chord_progression.append(7)
                 x += 1
                 # Generate random number to determine next chord
@@ -106,62 +106,87 @@ def generate_major_chord_progression():
 
 
 def generate_minor_chord_progression():
-    new_chord_progression.append('i')
+    # Add starting chord for chord progression
+    new_chord_progression.append(1)
 
+    # Generate a random number to determine next chord
     i = random.randint(0, 6)
 
     if i == 0:
-        new_chord_progression.append('ii_dim')
+        # Add chord 'ii_dim'
+        new_chord_progression.append(2)
     elif i == 1:
-        new_chord_progression.append('iii')
+        # Add chord 'iii'
+        new_chord_progression.append(3)
     elif i == 2:
-        new_chord_progression.append('iv')
+        # Add chord 'iv'
+        new_chord_progression.append(4)
     elif i == 3:
-        new_chord_progression.append('v')
+        # Add chord 'v'
+        new_chord_progression.append(5)
     elif i == 4:
-        new_chord_progression.append('vi')
+        # Add chord 'vi'
+        new_chord_progression.append(6)
     elif i == 5:
-        new_chord_progression.append('vii')
+        # Add chord 'vii'
+        new_chord_progression.append(7)
     else:
-        new_chord_progression.append('vii_dim')
+        # Add chord 'vii_dim'
+        new_chord_progression.append(8)
 
     x = 1
-
-    while new_chord_progression[x] != 'i':
+    # While last chord is not 'i'
+    while new_chord_progression[x] != 1:
+        # Generate random number between 0 and 1
         num = random.randint(0, 1)
-        if new_chord_progression[x] == 'vii':
-            new_chord_progression.append('iii')
+        # If chord is 'vii'
+        if new_chord_progression[x] == 7:
+            # Add chord 'iii'
+            new_chord_progression.append(3)
             x += 1
-        elif new_chord_progression[x] == 'iii':
-            new_chord_progression.append('vi')
+        # If chord is 'iii'
+        elif new_chord_progression[x] == 3:
+            # Add chord 'vi
+            new_chord_progression.append(6)
             x += 1
-        elif new_chord_progression[x] == 'vi':
+        # If chord is 'vi'
+        elif new_chord_progression[x] == 6:
             if num == 0:
-                new_chord_progression.append('ii_dim')
+                # Add chord 'ii_dim'
+                new_chord_progression.append(2)
                 x += 1
             else:
-                new_chord_progression.append('iv')
+                # Add chord 'iv'
+                new_chord_progression.append(4)
                 x += 1
-        elif new_chord_progression[x] == 'ii_dim':
+        # If chord is 'ii_dim'
+        elif new_chord_progression[x] == 2:
             if num == 0:
-                new_chord_progression.append('v')
+                # Add chord 'v'
+                new_chord_progression.append(5)
                 x += 1
             else:
-                new_chord_progression.append('vii_dim')
+                # Add chord 'vii_dim'
+                new_chord_progression.append(8)
                 x += 1
-        elif new_chord_progression[x] == 'iv':
+        # If chord is 'iv'
+        elif new_chord_progression[x] == 4:
             num = random.randint(0, 2)
             if num == 0:
-                new_chord_progression.append('v')
+                # Add chord 'v'
+                new_chord_progression.append(5)
                 x += 1
             if num == 1:
-                new_chord_progression.append('vii_dim')
+                # Add chord 'vii_dim'
+                new_chord_progression.append(8)
                 x += 1
             else:
-                new_chord_progression.append('vii')
+                # Add chord 'vii'
+                new_chord_progression.append(7)
                 x += 1
         else:
-            new_chord_progression.append('i')
+            # Add chord 'i'
+            new_chord_progression.append(1)
             x += 1
 
     print("Minor: ", new_chord_progression)
