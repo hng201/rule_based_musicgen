@@ -2,16 +2,17 @@ import random, music21
 
 # Array to store generated chord progression
 new_chord_progression = []
-
+major = False
 
 def generate_chord_progression():
     #x = random.randint(0, 1)
     x = 0
     if x == 0:
         generate_major_chord_progression()
+        major = True
     else:
         generate_minor_chord_progression()
-    return new_chord_progression
+    return new_chord_progression, major
 
 # Method to generate new chord progression
 # NOTE: current chord progression length is not restricted
@@ -102,46 +103,6 @@ def generate_major_chord_progression():
                 x += 1
     # Display the generated chord progression
     print("major: ", new_chord_progression)
-
-
-
-def gmaj_chord_progression(chord_progression_structure):
-    chord_prog_stream = music21.stream.Part()
-    bass_clef = music21.clef.BassClef()
-    chord_prog_stream.append(bass_clef)
-    key_gmaj = music21.key.KeySignature(1)
-    chord_prog_stream.append(key_gmaj)
-
-    for x in chord_progression_structure:
-        if x == 'i':
-            g_maj_chord = music21.chord.Chord(["G2", "B2", "D3"])
-            g_maj_chord.duration.type = "whole"
-            chord_prog_stream.append(g_maj_chord)
-        elif x == 'ii':
-            a_minor_chord = music21.chord.Chord(["A2", "C3", "E3"])
-            a_minor_chord.duration.type = "whole"
-            chord_prog_stream.append(a_minor_chord)
-        elif x == 'iii':
-            b_minor_chord = music21.chord.Chord(["B2", "D3", "F#3"])
-            b_minor_chord.duration.type = "whole"
-            chord_prog_stream.append(b_minor_chord)
-        elif x == 'iv':
-            c_maj_chord = music21.chord.Chord(["C3", "E3", "G3"])
-            c_maj_chord.duration.type = "whole"
-            chord_prog_stream.append(c_maj_chord)
-        elif x == 'v':
-            d_maj_chord = music21.chord.Chord(["D3", "F#3", "A3"])
-            d_maj_chord.duration.type = "whole"
-            chord_prog_stream.append(d_maj_chord)
-        elif x == 'vi':
-            e_min_chord = music21.chord.Chord(["E3", "G3", "B3"])
-            e_min_chord.duration.type = "whole"
-            chord_prog_stream.append(e_min_chord)
-        elif x == 'vii_dim':
-            fsharp_dim_chord = music21.chord.Chord(["F#2", "A2", "C3"])
-            fsharp_dim_chord.duration.type = "whole"
-            chord_prog_stream.append(fsharp_dim_chord)
-    return chord_prog_stream
 
 
 def generate_minor_chord_progression():
