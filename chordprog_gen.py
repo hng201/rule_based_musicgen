@@ -4,156 +4,190 @@ import random, music21
 new_chord_progression = []
 
 
+def generate_chord_progression():
+    x = random.randint(0, 1)
+    if x == 0:
+        generate_major_chord_progression()
+        major = True
+    else:
+        generate_minor_chord_progression()
+        major = False
+    return new_chord_progression, major
+
+
 # Method to generate new chord progression
 # NOTE: current chord progression length is not restricted
-def generate_chord_progression():
+def generate_major_chord_progression():
     # Add starting chord for chord progression
-    new_chord_progression.append('i')
+    # Number represents chord number
+    new_chord_progression.append(1)
     # Generate a random number to determine next chord
-    i = random.randint(0, 4)
+    i = random.randint(0, 5)
     if i == 0:
-        new_chord_progression.append('ii')
-    if i == 1:
-        new_chord_progression.append('iii')
-    if i == 2:
-        new_chord_progression.append('iv')
-    if i == 3:
-        new_chord_progression.append('v')
-    if i == 4:
-        new_chord_progression.append('vi')
-    if i == 5:
-        new_chord_progression.append('vii')
+        # Add chord 'ii'
+        new_chord_progression.append(2)
+    elif i == 1:
+        # Add chord 'iii'
+        new_chord_progression.append(3)
+    elif i == 2:
+        # Add chord 'iv'
+        new_chord_progression.append(4)
+    elif i == 3:
+        # Add chord 'v'
+        new_chord_progression.append(5)
+    elif i == 4:
+        # Add chord 'vi'
+        new_chord_progression.append(6)
+    elif i == 5:
+        # Add chord 'vii dim'
+        new_chord_progression.append(7)
 
     x = 1
 
     # While the last chord is not 'i'
-    while new_chord_progression[x] != 'i':
+    while new_chord_progression[x] != 1:
         # If chord at position x is 'iii'
-        if new_chord_progression[x] == 'iii':
+        if new_chord_progression[x] == 3:
             # Add chord 'vi' as the next chord
-            new_chord_progression.append('vi')
+            new_chord_progression.append(6)
             x += 1
         # If chord at position x is 'vi'
-        if new_chord_progression[x] == 'vi':
+        elif new_chord_progression[x] == 6:
             # Generate random number to determine next chord
             num = random.randint(0, 1)
             if num == 0:
                 # Add chord 'ii' as the next chord
-                new_chord_progression.append('ii')
+                new_chord_progression.append(2)
                 x += 1
             else:
                 # Add chord 'iv' as the next chord
-                new_chord_progression.append('iv')
+                new_chord_progression.append(4)
                 x += 1
         # If chord at position x is 'ii' or 'iv'
-        if new_chord_progression[x] == 'ii' or new_chord_progression[x] == 'iv':
+        elif new_chord_progression[x] == 2 or new_chord_progression[x] == 4:
             # Generate random number to determine next chord
             num = random.randint(0, 1)
             if num == 0:
                 # Add chord 'v' as the next chord
-                new_chord_progression.append('v')
+                new_chord_progression.append(5)
                 x += 1
             else:
-                # Add chord 'ii' as the next chord
-                new_chord_progression.append('vii')
+                # Add chord 'vii_dim' as the next chord
+                new_chord_progression.append(7)
                 x += 1
                 # Generate random number to determine next chord
                 num = random.randint(0, 1)
                 if num == 0:
                     # Add chord 'i' as the next chord
-                    new_chord_progression.append('i')
+                    new_chord_progression.append(1)
                     x += 1
                 else:
                     # Add chord 'iii' as the next chord
-                    new_chord_progression.append('iii')
+                    new_chord_progression.append(3)
                     x += 1
         # If chord at position x is 'v'
-        if new_chord_progression[x] == 'v':
+        elif new_chord_progression[x] == 5:
             # Add chord 'i' as the next chord
-            new_chord_progression.append('i')
+            new_chord_progression.append(1)
             x += 1
-        # If chord at position x is 'vii'
-        if new_chord_progression[x] == 'vii':
+        # If chord at position x is 'vii_dim'
+        elif new_chord_progression[x] == 7:
             # Generate random number to determine next chord
             num = random.randint(0, 1)
             if num == 0:
                 # Add chord 'i' as the next chord
-                new_chord_progression.append('i')
+                new_chord_progression.append(1)
                 x += 1
             else:
                 # Add chord 'iii' as the next chord
-                new_chord_progression.append('iii')
+                new_chord_progression.append(3)
                 x += 1
     # Display the generated chord progression
-    print(new_chord_progression)
-    return new_chord_progression
+    print("major: ", new_chord_progression)
 
 
-# Adds C Major chord progression notes
-def cmaj_chord_progression(chord_progression_structure):
-    # Create new stream to store chord progression notes
-    chord_prog_stream = music21.stream.Part()
-    # Variable to store bass clef value
-    bass_clef = music21.clef.BassClef()
-    # Add the base clef to the chord progression stream
-    chord_prog_stream.append(bass_clef)
+def generate_minor_chord_progression():
+    # Add starting chord for chord progression
+    new_chord_progression.append(1)
 
-    # For each chord in the chord progression structure
-    for x in chord_progression_structure:
-        # If chord = 'i'
-        if x == 'i':
-            # Create new chord and assign C major triad notes
-            c_maj_chord = music21.chord.Chord(["C3", "E3", "G3"])
-            # Set chord duration to semibreve/whole
-            c_maj_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(c_maj_chord)
-        # If chord = 'ii'
-        if x == 'ii':
-            # Create new chord and assign D minor triad notes
-            d_min_chord = music21.chord.Chord(["D3", "F3", "A3"])
-            # Set chord duration to semibreve/whole
-            d_min_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(d_min_chord)
-        # If chord = 'iii'
-        if x == 'iii':
-            # Create new chord and assign E minor triad notes
-            e_min_chord = music21.chord.Chord(["E3", "G3", "B3"])
-            # Set chord duration to semibreve/whole
-            e_min_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(e_min_chord)
-        # If chord = 'iv'
-        if x == 'iv':
-            # Create new chord and assign F major triad notes
-            f_maj_chord = music21.chord.Chord(["F2", "A2", "C3"])
-            # Set chord duration to semibreve/whole
-            f_maj_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(f_maj_chord)
-        # If chord = 'v'
-        if x == 'v':
-            # Create new chord and assign G major triad notes
-            g_maj_chord = music21.chord.Chord(["G2", "B2", "D3"])
-            # Set chord duration to semibreve/whole
-            g_maj_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(g_maj_chord)
-        # If chord = 'vi'
-        if x == 'vi':
-            # Create new chord and assign A minor triad notes
-            a_min_chord = music21.chord.Chord(["A2", "C3", "E3"])
-            # Set chord duration to semibreve/whole
-            a_min_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(a_min_chord)
-        # If chord = 'vii'
-        if x == 'vii':
-            # Create new chord and assign B diminished triad notes
-            b_dim_chord = music21.chord.Chord(["B2", "D3", "F3"])
-            # Set chord duration to semibreve/whole
-            b_dim_chord.duration.type = "whole"
-            # Add chord to stream
-            chord_prog_stream.append(b_dim_chord)
-    return chord_prog_stream
+    # Generate a random number to determine next chord
+    i = random.randint(0, 6)
+
+    if i == 0:
+        # Add chord 'ii_dim'
+        new_chord_progression.append(2)
+    elif i == 1:
+        # Add chord 'iii'
+        new_chord_progression.append(3)
+    elif i == 2:
+        # Add chord 'iv'
+        new_chord_progression.append(4)
+    elif i == 3:
+        # Add chord 'v'
+        new_chord_progression.append(5)
+    elif i == 4:
+        # Add chord 'vi'
+        new_chord_progression.append(6)
+    elif i == 5:
+        # Add chord 'vii'
+        new_chord_progression.append(7)
+    else:
+        # Add chord 'vii_dim'
+        new_chord_progression.append(8)
+
+    x = 1
+    # While last chord is not 'i'
+    while new_chord_progression[x] != 1:
+        # Generate random number between 0 and 1
+        num = random.randint(0, 1)
+        # If chord is 'vii'
+        if new_chord_progression[x] == 7:
+            # Add chord 'iii'
+            new_chord_progression.append(3)
+            x += 1
+        # If chord is 'iii'
+        elif new_chord_progression[x] == 3:
+            # Add chord 'vi
+            new_chord_progression.append(6)
+            x += 1
+        # If chord is 'vi'
+        elif new_chord_progression[x] == 6:
+            if num == 0:
+                # Add chord 'ii_dim'
+                new_chord_progression.append(2)
+                x += 1
+            else:
+                # Add chord 'iv'
+                new_chord_progression.append(4)
+                x += 1
+        # If chord is 'ii_dim'
+        elif new_chord_progression[x] == 2:
+            if num == 0:
+                # Add chord 'v'
+                new_chord_progression.append(5)
+                x += 1
+            else:
+                # Add chord 'vii_dim'
+                new_chord_progression.append(8)
+                x += 1
+        # If chord is 'iv'
+        elif new_chord_progression[x] == 4:
+            num = random.randint(0, 2)
+            if num == 0:
+                # Add chord 'v'
+                new_chord_progression.append(5)
+                x += 1
+            if num == 1:
+                # Add chord 'vii_dim'
+                new_chord_progression.append(8)
+                x += 1
+            else:
+                # Add chord 'vii'
+                new_chord_progression.append(7)
+                x += 1
+        else:
+            # Add chord 'i'
+            new_chord_progression.append(1)
+            x += 1
+
+    print("Minor: ", new_chord_progression)
