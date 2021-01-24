@@ -1,4 +1,4 @@
-import random, music21
+import random
 
 # Array to store generated chord progression
 new_chord_progression = []
