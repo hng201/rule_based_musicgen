@@ -1,4 +1,5 @@
-import music21, random
+import music21
+import random
 
 c_maj_chord = ["C3", "E3", "G3"]
 csharp_min_chord = ["C#3", "E3", "G#3"]
