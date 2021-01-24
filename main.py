@@ -11,7 +11,7 @@ if __name__ == '__main__':
     stream = music21.stream.Stream()
     # Generate a chord progression structure and assign the value to variable chord_progression
     chord_progression, major = chordprog_gen.generate_chord_progression()
-    # Generate Cmaj chord progression and assign the value to variable p_accomp
+    # Generate chord progression and assign the value to variable p_accomp
     p_accomp = accomp_gen.generate_accompaniment(chord_progression, major)
     # Generate a melody and assign the value to variable p_melody
     #p_melody = melody_gen.generate_melody(chord_progression)
