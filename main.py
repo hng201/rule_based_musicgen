@@ -1,4 +1,6 @@
-import music21, chordprog_gen, melody_gen, accomp_gen
+import accomp_gen
+import chordprog_gen
+import music21
 
 us = music21.environment.UserSettings()
 # Set path for software to open music scores
