@@ -88,10 +88,21 @@ def generate_chord_accompaniment(chord_progression, major, note_duration):
             accomp_stream.append(key_signature)
             chord_key = fsharp_minor_chord_progression
             print("Key: F# Minor")
-    y = 0
+    # Used for position in note_duration to indicate start and end of each bar
+    i = 0
     for chord in chord_progression:
-        chord = music21.chord.Chord(chord_key[chord - 1])
-        chord.duration = note_duration[y]
-        accomp_stream.append(chord)
-        y += 1
+        # Used to count duration in bar
+        x = 0
+        # While there duration does not equal 4
+        while x != 4:
+            # Create new chord based off chord from chord progression
+            new_chord = music21.chord.Chord(chord_key[chord - 1])
+            # Assign the chord the note duration
+            new_chord.duration = note_duration[i]
+            # Add the new chord to the stream
+            accomp_stream.append(new_chord)
+            # Add note duration used to current duration in bar
+            x = x + note_duration[i].quarterLength
+            # Increment position
+            i += 1
 
