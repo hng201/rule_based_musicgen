@@ -39,12 +39,12 @@ bass_clef = music21.clef.BassClef()
 accomp_stream.append(bass_clef)
 
 
-def generate_accompaniment(chord_progression, major):
-    generate_chord_accompaniment(chord_progression, major)
+def generate_accompaniment(chord_progression, major, note_duration):
+    generate_chord_accompaniment(chord_progression, major, note_duration)
     return accomp_stream
 
 
-def generate_chord_accompaniment(chord_progression, major):
+def generate_chord_accompaniment(chord_progression, major, note_duration):
     # Random int to decide key
     # For testing limited to number of keys implemented currently
     x = random.randint(0, 3)
@@ -88,5 +88,10 @@ def generate_chord_accompaniment(chord_progression, major):
             accomp_stream.append(key_signature)
             chord_key = fsharp_minor_chord_progression
             print("Key: F# Minor")
+    y = 0
     for chord in chord_progression:
-        accomp_stream.append(music21.chord.Chord(chord_key[chord - 1]))
+        chord = music21.chord.Chord(chord_key[chord - 1])
+        chord.duration = note_duration[y]
+        accomp_stream.append(chord)
+        y += 1
+
