@@ -22,5 +22,6 @@ def generate_note_duration(chord_progression):
         while duration_left != 0:
             num = random.randint(0, 5)
             if duration_left >= duration_length[num]:
-                note_duration = duration_type[num]
+                note_duration.append(duration_type[num])
+                duration_left = duration_left - duration_length[num]
     return note_duration
