@@ -1,11 +1,12 @@
-import random, music21
+import random
 
 # Array to store generated chord progression
 new_chord_progression = []
 
 
 def generate_chord_progression():
-    x = random.randint(0, 1)
+    #x = random.randint(0, 1)
+    x = 0
     if x == 0:
         generate_major_chord_progression()
         major = True
