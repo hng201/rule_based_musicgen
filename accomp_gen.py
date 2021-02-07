@@ -101,8 +101,11 @@ def generate_chord_accompaniment(chord_progression, major, note_duration):
         x = 0
         # While there duration does not equal 4
         while x != 4:
-            # Create new chord based off chord from chord progression
-            new_chord = music21.chord.Chord(chord_key[chord - 1])
+            if (chord-1) == len(chord_key):
+                new_chord = music21.chord.Chord(chord_key[chord - 2])
+            else:
+                # Create new chord based off chord from chord progression
+                new_chord = music21.chord.Chord(chord_key[chord - 1])
             # Assign the chord the note duration
             new_chord.duration = note_duration[i]
             # Add the new chord to the stream
