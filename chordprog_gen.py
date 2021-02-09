@@ -14,7 +14,7 @@ def generate_chord_progression(key, minNoBar):
 
 # Method to generate new chord progression
 # NOTE: current chord progression length is not restricted
-def generate_major_chord_progression(minNoBar):
+def generate_major_chord_progression(min_no_bar):
     # Add starting chord for chord progression
     # Number represents chord number
     new_chord_progression.append(1)
@@ -42,7 +42,7 @@ def generate_major_chord_progression(minNoBar):
     x = 1
 
     # While the last chord is not 'i' or chord progression length is less than minNoBar
-    while new_chord_progression[x] != 1 or len(new_chord_progression) < minNoBar:
+    while new_chord_progression[x] != 1 or len(new_chord_progression) < min_no_bar:
         # If chord at position x is 'iii'
         if new_chord_progression[x] == 3:
             # Add chord 'vi' as the next chord
