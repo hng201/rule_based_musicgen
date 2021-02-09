@@ -106,7 +106,7 @@ def generate_major_chord_progression(minNoBar):
 def generate_minor_chord_progression(minNoBar):
     # Add starting chord for chord progression
     new_chord_progression.append(1)
-    selectRandomChord()
+    select_random_chord()
 
     x = 1
     # While last chord is not 'i' or chord progression length is less than minNoBar
@@ -116,7 +116,7 @@ def generate_minor_chord_progression(minNoBar):
         # If chord is 'i'
         if new_chord_progression[x] == 1:
             # Select a random chord
-            selectRandomChord()
+            select_random_chord()
             x += 1
         # If chord is 'vii'
         if new_chord_progression[x] == 7:
@@ -171,7 +171,7 @@ def generate_minor_chord_progression(minNoBar):
     print("Minor: ", new_chord_progression)
 
 
-def selectRandomChord():
+def select_random_chord():
     # Generate a random number to determine next chord
     i = random.randint(0, 6)
 
