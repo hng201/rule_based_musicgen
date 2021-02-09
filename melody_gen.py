@@ -22,33 +22,54 @@ melody_stream.append(treble_clef)
 # Method to generate melody
 def generate_melody(chord_progression, melody_rhythm, key):
     if key == 0:
+        # Assign notes to C major notes
         notes = c_major_notes
     elif key == 1:
+        # Create key signature of 1 sharp
         key_signature = music21.key.KeySignature(1)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assign notes to G major notes
         notes = g_major_notes
     elif key == 2:
+        # Create key signature of 2 sharps
         key_signature = music21.key.KeySignature(2)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assign notes to D major notes
         notes = d_major_notes
     elif key == 3:
+        # Create key signature of 3 sharps
         key_signature = music21.key.KeySignature(3)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assign notes to A major notes
         notes = a_major_notes
     elif key == 4:
+        # Assign notes to A minor notes
         notes = a_minor_notes
     elif key == 5:
+        # Create key signature of 1 sharp
         key_signature = music21.key.KeySignature(1)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assign notes to E minor notes
         notes = e_minor_notes
     elif key == 6:
+        # Create key signature of 2 sharps
         key_signature = music21.key.KeySignature(2)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assign notes to B minor notes
         notes = b_minor_notes
     else:
+        # Create key signature of 3 sharps
         key_signature = music21.key.KeySignature(3)
+        # Add key signature to melody stream
         melody_stream.append(key_signature)
+        # Assigns notes to F# minor notes
         notes = fsharp_minor_notes
+    # Choose note based on chord progression, melody rhythm and notes
     choose_note(chord_progression, melody_rhythm, notes)
     return melody_stream
 
