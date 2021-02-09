@@ -52,39 +52,59 @@ def generate_accompaniment(chord_progression, key, accomp_rhythm):
 
 def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
     if key == 0:
+        # Assign chord key to C major chord progression triad chords
         chord_key = c_major_chord_progression
         print("Key: C Major")
     elif key == 1:
+        # Create key signature of 1 sharp
         key_signature = music21.key.KeySignature(1)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord_key to G major chord progression triad chords
         chord_key = g_major_chord_progression
         print("Key: G Major")
     elif key == 2:
+        # Create key signature of 2 sharps
         key_signature = music21.key.KeySignature(2)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord key to D major chord progression triad chords
         chord_key = d_major_chord_progression
         print("Key: D Major")
     elif key == 3:
+        # Create key signature of 3 sharps
         key_signature = music21.key.KeySignature(3)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord key to A major chord progression triad chords
         chord_key = a_major_chord_progression
         print("Key: A Major")
     elif key == 4:
+        # Assign chord key to A minor chord progression triad chords
         chord_key = a_minor_chord_progression
         print("Key: A Minor")
     elif key == 5:
+        # Create key signature of 1 sharp
         key_signature = music21.key.KeySignature(1)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord key to E minor chord progression triad chords
         chord_key = e_minor_chord_progression
         print("Key: E Minor")
     elif key == 6:
+        # Create key signature of 2 sharps
         key_signature = music21.key.KeySignature(2)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord key to B minor chord progression triad chords
         chord_key = b_minor_chord_progression
         print("Key: B Minor")
     else:
+        # Create key signature of 3 sharps
         key_signature = music21.key.KeySignature(3)
+        # Add key signature to accomp stream
         accomp_stream.append(key_signature)
+        # Assign chord key to F# minor chord progression triad chords
         chord_key = fsharp_minor_chord_progression
         print("Key: F# Minor")
     # Used for position in note_duration to indicate start and end of each bar
