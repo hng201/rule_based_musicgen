@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # Create a new stream
     stream = music21.stream.Stream()
     # Generate a chord progression structure and assign the value to variable chord_progression
-    chord_progression = chordprog_gen.generate_chord_progression(params.key, params.minNoBar)
+    chord_progression = chordprog_gen.generate_chord_progression(params.key, params.min_no_bar)
     # Generate rhythm for accompaniment
     accomp_rhythm = rhythm_gen.generate_note_duration(chord_progression)
     # Generate chord progression and assign the value to variable p_accomp and key
