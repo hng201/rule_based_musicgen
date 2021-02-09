@@ -1,4 +1,5 @@
-import random, music21
+import music21
+import random
 
 c_major_notes = ["C", "D", "E", "F", "G", "A", "B"]
 g_major_notes = ["G", "A", "B", "C", "D", "E", "F#"]
@@ -19,37 +20,35 @@ melody_stream.append(treble_clef)
 
 
 # Method to generate melody
-def generate_melody(chord_progression, melody_rhythm, major, key):
-    if major:
-        if key == 0:
-            notes = c_major_notes
-        elif key == 1:
-            key_signature = music21.key.KeySignature(1)
-            melody_stream.append(key_signature)
-            notes = g_major_notes
-        elif key == 2:
-            key_signature = music21.key.KeySignature(2)
-            melody_stream.append(key_signature)
-            notes = d_major_notes
-        else:
-            key_signature = music21.key.KeySignature(3)
-            melody_stream.append(key_signature)
-            notes = a_major_notes
+def generate_melody(chord_progression, melody_rhythm, key):
+    if key == 0:
+        notes = c_major_notes
+    elif key == 1:
+        key_signature = music21.key.KeySignature(1)
+        melody_stream.append(key_signature)
+        notes = g_major_notes
+    elif key == 2:
+        key_signature = music21.key.KeySignature(2)
+        melody_stream.append(key_signature)
+        notes = d_major_notes
+    elif key == 3:
+        key_signature = music21.key.KeySignature(3)
+        melody_stream.append(key_signature)
+        notes = a_major_notes
+    elif key == 4:
+        notes = a_minor_notes
+    elif key == 5:
+        key_signature = music21.key.KeySignature(1)
+        melody_stream.append(key_signature)
+        notes = e_minor_notes
+    elif key == 6:
+        key_signature = music21.key.KeySignature(2)
+        melody_stream.append(key_signature)
+        notes = b_minor_notes
     else:
-        if key == 0:
-            notes = a_minor_notes
-        elif key == 1:
-            key_signature = music21.key.KeySignature(1)
-            melody_stream.append(key_signature)
-            notes = e_minor_notes
-        elif key == 2:
-            key_signature = music21.key.KeySignature(2)
-            melody_stream.append(key_signature)
-            notes = b_minor_notes
-        else:
-            key_signature = music21.key.KeySignature(3)
-            melody_stream.append(key_signature)
-            notes = fsharp_minor_notes
+        key_signature = music21.key.KeySignature(3)
+        melody_stream.append(key_signature)
+        notes = fsharp_minor_notes
     choose_note(chord_progression, melody_rhythm, notes)
     return melody_stream
 
