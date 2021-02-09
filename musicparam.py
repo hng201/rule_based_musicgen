@@ -4,4 +4,4 @@ class MusicParam:
         # Minor Keys: 4 = A, 5 = E, 6 = B, 7 = F#
         self.key = 5
         # Set minimum no of bars for chord progression generation
-        self.minNoBar = 12
+        self.min_no_bar = 12
