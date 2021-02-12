@@ -17,7 +17,7 @@ if __name__ == '__main__':
     chord_progression = chordprog_gen.generate_chord_progression(params.key, params.min_no_bar)
     # Generate rhythm for accompaniment
     accomp_rhythm = rhythm_gen.generate_note_duration(chord_progression)
-    # Generate chord progression and assign the value to variable p_accomp and key
+    # Generate chord progression and assign the value to variable p_accomp
     p_accomp = accomp_gen.generate_accompaniment(chord_progression, params.key, accomp_rhythm)
     # Generate rhythm for melody
     melody_rhythm = rhythm_gen.generate_note_duration(chord_progression)
