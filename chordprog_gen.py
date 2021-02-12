@@ -13,7 +13,6 @@ def generate_chord_progression(key, minNoBar):
 
 
 # Method to generate new chord progression
-# NOTE: current chord progression length is not restricted
 def generate_major_chord_progression(min_no_bar):
     # Add starting chord for chord progression
     # Number represents chord number
