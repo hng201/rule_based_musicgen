@@ -137,15 +137,19 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
 
 
 def select_chord_type(chord):
+    # Array to store new order of chord notes
     chord_type = []
     num = random.randint(0, 2)
     if num == 0:
+        # Chord type is root
         chord_type = chord
     elif num == 1:
+        # Chord type is 1st inversion
         chord_type.append(chord[1])
         chord_type.append(chord[2])
         chord_type.append(chord[0])
     else:
+        # Chord type is 2nd inversion
         chord_type.append(chord[2])
         chord_type.append(chord[0])
         chord_type.append(chord[1])
@@ -153,10 +157,19 @@ def select_chord_type(chord):
 
 
 def select_chord_pitch(chord):
+    # New array to store chord notes with pitches
     new_chord = []
+    # List of arrays for notes
+    # This effects pitch range to ensure notes
+    # are still in correct order for chord type
     noteA = ["A", "B"]
     noteB = ["G", "G#", "F", "F#"]
+    # Kept as reference
     noteC = ["C", "C#", "D", "E"]
+    # sn is starting note
+    # Used as reference to ensure other
+    # notes are higher pitch than sn
+    sn = ""
     if chord[0] in noteA:
         note = chord[0] + "2"
         new_chord.append(note)
