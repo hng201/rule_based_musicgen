@@ -137,21 +137,20 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
 
 
 def select_chord_type(chord):
-    chord_type = chord
-    random.shuffle(chord_type)
-    if chord_type[0] == chord[0]:
-        if chord_type[1] != chord[1]:
-            chord_type[1] = chord[1]
-            chord_type[2] = chord[2]
-    if chord_type[0] == chord[1]:
-        if chord_type[1] != chord[2]:
-            chord_type[1] = chord[2]
-            chord_type[2] = chord[0]
-    if chord_type[0] == chord[2]:
-        if chord_type[1] != chord[0]:
-            chord_type[1] = chord[0]
-            chord_type[2] = chord[1]
+    chord_type = []
+    num = random.randint(0, 2)
+    if num == 0:
+        chord_type = chord
+    elif num == 1:
+        chord_type.append(chord[1])
+        chord_type.append(chord[2])
+        chord_type.append(chord[0])
+    else:
+        chord_type.append(chord[2])
+        chord_type.append(chord[0])
+        chord_type.append(chord[1])
     return select_chord_pitch(chord_type)
+
 
 def select_chord_pitch(chord):
     new_chord = []
