@@ -1,28 +1,28 @@
 import music21
 import random
 
-c_maj_chord = ["C3", "E3", "G3"]
-csharp_min_chord = ["C#3", "E3", "G#3"]
-csharp_dim_chord = ["C#3", "E3", "G3"]
+c_maj_chord = ["C", "E", "G"]
+csharp_min_chord = ["C#", "E", "G#"]
+csharp_dim_chord = ["C#", "E", "G"]
 
-d_maj_chord = ["D3", "F#3", "A3"]
-d_min_chord = ["D3", "F3", "A3"]
+d_maj_chord = ["D", "F#", "A"]
+d_min_chord = ["D", "F", "A"]
 
-e_maj_chord = ["E3", "G#3", "B3"]
-e_min_chord = ["E3", "G3", "B3"]
+e_maj_chord = ["E", "G#", "B"]
+e_min_chord = ["E", "G", "B"]
 
-f_maj_chord = ["F2", "A2", "C3"]
-fsharp_min_chord = ["F#2", "A2", "C#3"]
-fsharp_dim_chord = ["F#2", "A2", "C3"]
+f_maj_chord = ["F", "A", "C"]
+fsharp_min_chord = ["F#", "A", "C#"]
+fsharp_dim_chord = ["F#", "A", "C"]
 
-g_maj_chord = ["G2", "B2", "D3"]
-gsharp_dim_chord = ["G#2", "B2", "D3"]
+g_maj_chord = ["G", "B", "D"]
+gsharp_dim_chord = ["G#", "B", "D"]
 
-a_maj_chord = ["A2", "C#3", "E3"]
-a_min_chord = ["A2", "C3", "E3"]
+a_maj_chord = ["A", "C#", "E"]
+a_min_chord = ["A", "C", "E"]
 
-b_min_chord = ["B2", "D3", "F#3"]
-b_dim_chord = ["B2", "D3", "F3"]
+b_min_chord = ["B", "D", "F#"]
+b_dim_chord = ["B", "D", "F"]
 
 c_major_chord_progression = [c_maj_chord, d_min_chord, e_min_chord, f_maj_chord, g_maj_chord, a_min_chord, b_dim_chord]
 g_major_chord_progression = [g_maj_chord, a_min_chord, b_min_chord, c_maj_chord, d_maj_chord, e_min_chord,
@@ -115,10 +115,17 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
         # While there duration does not equal 4
         while x != 4:
             if (chord-1) == len(chord_key):
-                new_chord = music21.chord.Chord(chord_key[chord - 2])
-            else:
+                # Get chord notes pitch
+                chord_notes = select_chord_type(chord_key[chord-2])
+                print(chord_notes)
                 # Create new chord based off chord from chord progression
-                new_chord = music21.chord.Chord(chord_key[chord - 1])
+                new_chord = music21.chord.Chord(chord_notes)
+            else:
+                # Get chord notes pitch
+                chord_notes = select_chord_type(chord_key[chord - 1])
+                print(chord_notes)
+                # Create new chord based off chord from chord progression
+                new_chord = music21.chord.Chord(chord_notes)
             # Assign the chord the note duration
             new_chord.duration = accomp_rhythm[i]
             # Add the new chord to the stream
@@ -127,3 +134,114 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
             x = x + accomp_rhythm[i].quarterLength
             # Increment position
             i += 1
+
+
+def select_chord_type(chord):
+    chord_type = chord
+    random.shuffle(chord_type)
+    if chord_type[0] == chord[0]:
+        if chord_type[1] != chord[1]:
+            chord_type[1] = chord[1]
+            chord_type[2] = chord[2]
+    if chord_type[0] == chord[1]:
+        if chord_type[1] != chord[2]:
+            chord_type[1] = chord[2]
+            chord_type[2] = chord[0]
+    if chord_type[0] == chord[2]:
+        if chord_type[1] != chord[0]:
+            chord_type[1] = chord[0]
+            chord_type[2] = chord[1]
+    return select_chord_pitch(chord_type)
+
+def select_chord_pitch(chord):
+    new_chord = []
+    noteA = ["A", "B"]
+    noteB = ["G", "G#", "F", "F#"]
+    noteC = ["C", "C#", "D", "E"]
+    if chord[0] in noteA:
+        note = chord[0] + "2"
+        new_chord.append(note)
+        i = 1
+        while i != 3:
+            num = random.randint(0, 1)
+            if num == 0:
+                note = chord[i] + "3"
+                new_chord.append(note)
+            else:
+                note = chord[i] + "4"
+                new_chord.append(note)
+            i += 1
+    elif chord in noteB:
+        num = random.randint(0, 1)
+        if num == 0:
+            note = chord[0] + "2"
+            sn = note
+            new_chord.append(note)
+        else:
+            note = chord[0] + "3"
+            sn = note
+            new_chord.append(note)
+        if sn [-1] == "2":
+            note = chord[1] + "2"
+            new_chord.append(note)
+            num = random.randint(0, 1)
+            if num == 0:
+                note = chord[2] + "3"
+                new_chord.append(note)
+            else:
+                note = chord[2] + "4"
+                new_chord.append(note)
+        else:
+            note = chord[1] + "3"
+            new_chord.append(note)
+            num = random.randint(0, 1)
+            note = chord[2] + "4"
+            new_chord.append(note)
+
+    else:
+        num = random.randint(0, 2)
+        if num == 0:
+            note = chord[0] + "2"
+            sn = note
+            new_chord.append(note)
+        elif num == 1:
+            note = chord[0] + "3"
+            sn = note
+            new_chord.append(note)
+        elif num == 2:
+            note = chord[0] + "4"
+            sn = note
+            new_chord.append(note)
+        if sn[-1] == "4":
+            x = 1
+            for i in range(2):
+                note = chord[x] + "4"
+                new_chord.append(note)
+                x += 1
+        elif sn[-1] == "3":
+            x = 1
+            for i in range(2):
+                num = random.randint(0, 1)
+                if num == 0:
+                    note = chord[x] + "3"
+                    new_chord.append(note)
+                else:
+                    note = chord[x] + "4"
+                    new_chord.append(note)
+                x += 1
+        elif sn[-1] == "2":
+            x = 1
+            for i in range(2):
+                num = random.randint(0, 2)
+                if num == 0:
+                    note = chord[x] + "2"
+                    new_chord.append(note)
+                elif num == 1:
+                    note = chord[x] + "3"
+                    new_chord.append(note)
+                elif num == 2:
+                    note = chord[x] + "4"
+                    new_chord.append(note)
+                x += 1
+    return new_chord
+
