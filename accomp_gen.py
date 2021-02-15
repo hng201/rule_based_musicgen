@@ -193,7 +193,6 @@ def select_chord_pitch(chord):
         else:
             note = chord[1] + "3"
             new_chord.append(note)
-            num = random.randint(0, 1)
             note = chord[2] + "4"
             new_chord.append(note)
 
@@ -232,15 +231,42 @@ def select_chord_pitch(chord):
             x = 1
             for i in range(2):
                 num = random.randint(0, 2)
-                if num == 0:
-                    note = chord[x] + "2"
-                    new_chord.append(note)
-                elif num == 1:
-                    note = chord[x] + "3"
-                    new_chord.append(note)
-                elif num == 2:
-                    note = chord[x] + "4"
-                    new_chord.append(note)
-                x += 1
+                if len(new_chord) == 2:
+                    temp = new_chord[1]
+                    if temp[-1] == "2":
+                        if num == 0:
+                            note = chord[x] + "2"
+                            new_chord.append(note)
+                        elif num == 1:
+                            note = chord[x] + "3"
+                            new_chord.append(note)
+                        else:
+                            note = chord[x] + "4"
+                            new_chord.append(note)
+                        x += 1
+                    elif temp[-1] == "3":
+                        num = random.randint(0, 1)
+                        if num == 0:
+                            note = chord[x] + "3"
+                            new_chord.append(note)
+                        else:
+                            note = chord[x] + "4"
+                            new_chord.append(note)
+                        x += 1
+                    else:
+                        note = chord[x] + "4"
+                        new_chord.append(note)
+                    x += 1
+                else:
+                    if num == 0:
+                        note = chord[x] + "2"
+                        new_chord.append(note)
+                    elif num == 1:
+                        note = chord[x] + "3"
+                        new_chord.append(note)
+                    else:
+                        note = chord[x] + "4"
+                        new_chord.append(note)
+                    x += 1
     return new_chord
 
