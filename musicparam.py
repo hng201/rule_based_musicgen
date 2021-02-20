@@ -7,4 +7,7 @@ class MusicParam:
         self.min_no_bar = 12
         # Set maximum number of rests that can be present in each bar
         # This refers to rest notes and not note duration
-        self.rest_bar_limit = 2
+        # Set rest limit for accompaniment
+        self.accomp_rest_bar_limit = 2
+        # Set rest limit for melody
+        self.melody_rest_bar_limit = 1
