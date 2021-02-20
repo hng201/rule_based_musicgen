@@ -45,12 +45,12 @@ bass_clef = music21.clef.BassClef()
 accomp_stream.append(bass_clef)
 
 
-def generate_accompaniment(chord_progression, key, accomp_rhythm):
-    generate_chord_accompaniment(chord_progression, key, accomp_rhythm)
+def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_bar_limit):
+    generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_bar_limit)
     return accomp_stream
 
 
-def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
+def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_bar_limit):
     if key == 0:
         # Assign chord key to C major chord progression triad chords
         chord_key = c_major_chord_progression
@@ -112,12 +112,14 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
     for chord in chord_progression:
         # Used to count duration in bar
         x = 0
+        # Used to store how often a rest note is added
+        rest_frequency = 0
         # While there duration does not equal 4
         while x != 4:
             # Generate random number to decide between chord note and rest note
             num = random.randint(0, 1)
-            # If number is 0, then add a chord note
-            if num == 0:
+            # If number is 0 or rest_frequency equals rest bar limit
+            if num == 0 or rest_frequency == rest_bar_limit:
                 if (chord-1) == len(chord_key):
                     # Get chord notes pitch
                     chord_notes = select_chord_type(chord_key[chord-2])
@@ -145,6 +147,8 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
                 accomp_stream.append(rest)
                 # Add the note duration used to current duration in bar
                 x = x + accomp_rhythm[i].quarterLength
+                # Increment rest frequency to indicate a rest note has been added
+                rest_frequency += 1
             # Increment position
             i += 1
 
