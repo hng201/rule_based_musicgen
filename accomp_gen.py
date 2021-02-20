@@ -114,24 +114,37 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm):
         x = 0
         # While there duration does not equal 4
         while x != 4:
-            if (chord-1) == len(chord_key):
-                # Get chord notes pitch
-                chord_notes = select_chord_type(chord_key[chord-2])
-                print(chord_notes)
-                # Create new chord based off chord from chord progression
-                new_chord = music21.chord.Chord(chord_notes)
+            # Generate random number to decide between chord note and rest note
+            num = random.randint(0, 1)
+            # If number is 0, then add a chord note
+            if num == 0:
+                if (chord-1) == len(chord_key):
+                    # Get chord notes pitch
+                    chord_notes = select_chord_type(chord_key[chord-2])
+                    print(chord_notes)
+                    # Create new chord based off chord from chord progression
+                    new_chord = music21.chord.Chord(chord_notes)
+                else:
+                    # Get chord notes pitch
+                    chord_notes = select_chord_type(chord_key[chord - 1])
+                    print(chord_notes)
+                    # Create new chord based off chord from chord progression
+                    new_chord = music21.chord.Chord(chord_notes)
+                # Assign the chord the note duration
+                new_chord.duration = accomp_rhythm[i]
+                # Add the new chord to the stream
+                accomp_stream.append(new_chord)
+                # Add note duration used to current duration in bar
+                x = x + accomp_rhythm[i].quarterLength
             else:
-                # Get chord notes pitch
-                chord_notes = select_chord_type(chord_key[chord - 1])
-                print(chord_notes)
-                # Create new chord based off chord from chord progression
-                new_chord = music21.chord.Chord(chord_notes)
-            # Assign the chord the note duration
-            new_chord.duration = accomp_rhythm[i]
-            # Add the new chord to the stream
-            accomp_stream.append(new_chord)
-            # Add note duration used to current duration in bar
-            x = x + accomp_rhythm[i].quarterLength
+                # Create new rest note
+                rest = music21.note.Rest()
+                # Assign rest the note duration
+                rest.duration = accomp_rhythm[i]
+                # Add the rest to the stream
+                accomp_stream.append(rest)
+                # Add the note duration used to current duration in bar
+                x = x + accomp_rhythm[i].quarterLength
             # Increment position
             i += 1
 
