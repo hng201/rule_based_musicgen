@@ -5,3 +5,6 @@ class MusicParam:
         self.key = 5
         # Set minimum no of bars for chord progression generation
         self.min_no_bar = 12
+        # Set maximum number of rests that can be present in each bar
+        # This refers to rest notes and not note duration
+        self.rest_bar_limit = 2
