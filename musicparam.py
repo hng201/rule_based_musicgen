@@ -5,10 +5,10 @@ class MusicParam:
         self.key = 7
         # Set minimum no of bars for chord progression generation
         self.min_no_bar = 12
-        # Set total duration for rests in the composition
-        # This refers to maximum duration of all rests counted
-        # within the composition
+        # Set rest limit per bar
+        # This refers to total duration of rest notes
+        # Max is 4 due to each bar being 4 beats
         # Set rest limit for accompaniment
-        self.accomp_rest_limit = 13.25
+        self.accomp_rest_limit = 1.5
         # Set rest limit for melody
-        self.melody_rest_limit = 6.75
+        self.melody_rest_limit = 0.5
