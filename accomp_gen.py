@@ -112,20 +112,22 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_lim
     for chord in chord_progression:
         # Used to count duration in bar
         x = 0
+        # Count for total rest duration per bar
+        rest_count = 0
         # While there duration does not equal 4
         while x != 4:
             # Generate random number to decide between chord note and rest note
             num = random.randint(0, 1)
-            # If num is 0 or rest limit minus current note duration is greater than or equal to 0
-            if num == 0 and rest_limit - accomp_rhythm[i].quarterLength >= 0:
+            # If num is 0 or rest_count plus current note duration is less than rest_limit
+            if num == 0 and rest_count + accomp_rhythm[i].quarterLength < rest_limit:
                 # Create new rest note
                 rest = music21.note.Rest()
                 # Assign rest the note duration
                 rest.duration = accomp_rhythm[i]
                 # Add the rest to the stream
                 accomp_stream.append(rest)
-                # Take away note duration used from rest limit
-                rest_limit = rest_limit - accomp_rhythm[i].quarterLength
+                # Add note duration to rest_count
+                rest_count = rest_count + accomp_rhythm[i].quarterLength
                 # Add the note duration used to current duration in bar
                 x = x + accomp_rhythm[i].quarterLength
             else:
