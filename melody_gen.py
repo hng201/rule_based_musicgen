@@ -20,7 +20,7 @@ melody_stream.append(treble_clef)
 
 
 # Method to generate melody
-def generate_melody(chord_progression, melody_rhythm, key, rest_bar_limit):
+def generate_melody(chord_progression, melody_rhythm, key, rest_limit):
     if key == 0:
         # Assign notes to C major notes
         notes = c_major_notes
@@ -69,29 +69,36 @@ def generate_melody(chord_progression, melody_rhythm, key, rest_bar_limit):
         melody_stream.append(key_signature)
         # Assigns notes to F# minor notes
         notes = fsharp_minor_notes
-    # Choose note based on chord progression, melody rhythm and notes
-    choose_note(chord_progression, melody_rhythm, notes, rest_bar_limit)
+    # Choose note based on chord progression, melody rhythm and notes and rest limit
+    choose_note(chord_progression, melody_rhythm, notes, rest_limit)
     return melody_stream
 
 
-def choose_note(chord_progression, melody_rhythm, notes, rest_bar_limit):
+def choose_note(chord_progression, melody_rhythm, notes, rest_limit):
     # Used to store current note value
     current_note = 0
     # Counter for rhythm
     i = 0
-
     for chord in chord_progression:
         # Count duration used for bar
         x = 0
         # Define position for notes based on chord
         note_choices = [chord - 1, chord, chord + 1, chord + 2, chord + 3]
-        # Used to store number of rests added to current bar
-        rest_count = 0
         # Current duration does not equal 4
         while x != 4:
             num = random.randint(0, 1)
-            # If number is 0 or rest count equals rest bar limit
-            if num == 0 or rest_count == rest_bar_limit:
+            if num == 0 and rest_limit - melody_rhythm[i].quarterLength >=0:
+                # Create new rest note
+                rest = music21.note.Rest()
+                # Assign note duration to rest
+                rest.duration = melody_rhythm[i]
+                # Add rest to melody stream
+                melody_stream.append(rest)
+                # Take away note duration used from rest limit
+                rest_limit = rest_limit - melody_rhythm[i].quarterLength
+                # Add note duration used to current note duration in bar
+                x = x + melody_rhythm[i].quarterLength
+            else:
                 # If note is the first note of a new bar
                 if x == 0:
                     # Select a random triad note
@@ -111,8 +118,6 @@ def choose_note(chord_progression, melody_rhythm, notes, rest_bar_limit):
                     current_note = note
                     # Add note duration used to current note duration in bar
                     x = x + melody_rhythm[i].quarterLength
-                    # Increment position
-                    i += 1
                 # If the current note value is odd/ is a passing note
                 elif current_note % 2 > 0:
                     # Select a note above or below the current note
@@ -131,8 +136,6 @@ def choose_note(chord_progression, melody_rhythm, notes, rest_bar_limit):
                     current_note = note
                     # Add note duration used to current note duration in bar
                     x = x + melody_rhythm[i].quarterLength
-                    # Increment position
-                    i += 1
                 else:
                     # Select a random note
                     note = random.choice(note_choices)
@@ -150,18 +153,5 @@ def choose_note(chord_progression, melody_rhythm, notes, rest_bar_limit):
                     current_note = note
                     # Add note duration used to current note duration in bar
                     x = x + melody_rhythm[i].quarterLength
-                    # Increment position
-                    i += 1
-            else:
-                # Create new rest note
-                rest = music21.note.Rest()
-                # Assign note duration to rest
-                rest.duration = melody_rhythm[i]
-                # Add rest to melody stream
-                melody_stream.append(rest)
-                # Increment rest count
-                rest_count += 1
-                # Add note duration used to current note duration in bar
-                x = x + melody_rhythm[i].quarterLength
-                # Increment position
-                i += 1
+            # Increment position
+            i += 1
