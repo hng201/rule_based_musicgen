@@ -82,20 +82,23 @@ def choose_note(chord_progression, melody_rhythm, notes, rest_limit):
     for chord in chord_progression:
         # Count duration used for bar
         x = 0
+        # Count for total rest duration per bar
+        rest_count = 0
         # Define position for notes based on chord
         note_choices = [chord - 1, chord, chord + 1, chord + 2, chord + 3]
         # Current duration does not equal 4
         while x != 4:
             num = random.randint(0, 1)
-            if num == 0 and rest_limit - melody_rhythm[i].quarterLength >=0:
+            # If num is 0 or rest_count plus current note duration is less than rest_limit
+            if num == 0 and rest_count + melody_rhythm[i].quarterLength < rest_limit:
                 # Create new rest note
                 rest = music21.note.Rest()
                 # Assign note duration to rest
                 rest.duration = melody_rhythm[i]
                 # Add rest to melody stream
                 melody_stream.append(rest)
-                # Take away note duration used from rest limit
-                rest_limit = rest_limit - melody_rhythm[i].quarterLength
+                # Add note duration to rest count
+                rest_count = rest_count + melody_rhythm[i].quarterLength
                 # Add note duration used to current note duration in bar
                 x = x + melody_rhythm[i].quarterLength
             else:
