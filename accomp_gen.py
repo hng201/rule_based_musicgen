@@ -46,11 +46,13 @@ accomp_stream.append(bass_clef)
 
 
 def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit):
-    generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_limit)
+    accomp_key = get_accomp_key(key)
+    #generate_chord_accompaniment(chord_progression, accomp_key, accomp_rhythm, rest_limit)
+    generate_arpeggio_accomp(chord_progression, accomp_key)
     return accomp_stream
 
 
-def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_limit):
+def get_accomp_key(key):
     if key == 0:
         # Assign chord key to C major chord progression triad chords
         chord_key = c_major_chord_progression
@@ -60,7 +62,7 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_lim
         key_signature = music21.key.KeySignature(1)
         # Add key signature to accomp stream
         accomp_stream.append(key_signature)
-        # Assign chord_key to G major chord progression triad chords
+        # Assign accomp_key to G major chord progression triad chords
         chord_key = g_major_chord_progression
         print("Key: G Major")
     elif key == 2:
@@ -107,6 +109,10 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_lim
         # Assign chord key to F# minor chord progression triad chords
         chord_key = fsharp_minor_chord_progression
         print("Key: F# Minor")
+    return chord_key
+
+
+def generate_chord_accompaniment(chord_progression, accomp_key, accomp_rhythm, rest_limit):
     # Counter for rhythm
     i = 0
     for chord in chord_progression:
@@ -131,16 +137,16 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_lim
                 # Add the note duration used to current duration in bar
                 x = x + accomp_rhythm[i].quarterLength
             else:
-                if (chord-1) == len(chord_key):
+                if (chord-1) == len(accomp_key):
                     # Get chord notes pitch
-                    chord_notes = select_chord_type(chord_key[chord-2])
+                    chord_notes = select_chord_type(accomp_key[chord - 2])
                     # Print chord notes for testing purposes
                     print(chord_notes)
                     # Create new chord based off chord from chord progression
                     new_chord = music21.chord.Chord(chord_notes)
                 else:
                     # Get chord notes pitch
-                    chord_notes = select_chord_type(chord_key[chord - 1])
+                    chord_notes = select_chord_type(accomp_key[chord - 1])
                     # Print chord notes for testing purposes
                     print(chord_notes)
                     # Create new chord based off chord from chord progression
@@ -153,6 +159,34 @@ def generate_chord_accompaniment(chord_progression, key, accomp_rhythm, rest_lim
                 x = x + accomp_rhythm[i].quarterLength
             # Increment position
             i += 1
+
+
+def generate_arpeggio_accomp(chord_progression, accomp_key):
+    for chord in chord_progression:
+        x = 0
+        while x != 4:
+            if (chord-1) == len(accomp_key):
+                # Get chord notes pitch
+                chord_notes = select_chord_type(accomp_key[chord - 2])
+                # Print chord notes for testing purposes
+                print(chord_notes)
+                for note in chord_notes:
+                    new_note = music21.note.Note(note)
+                    new_note.duration = music21.duration.Duration('eighth')
+                    if x + new_note.duration.quarterLength <= 4:
+                        accomp_stream.append(new_note)
+                        x = x + new_note.duration.quarterLength
+            else:
+                # Get chord notes pitch
+                chord_notes = select_chord_type(accomp_key[chord - 1])
+                # Print chord notes for testing purposes
+                print(chord_notes)
+                for note in chord_notes:
+                    new_note = music21.note.Note(note)
+                    new_note.duration = music21.duration.Duration('eighth')
+                    if x + new_note.duration.quarterLength <= 4:
+                        accomp_stream.append(new_note)
+                        x = x + new_note.duration.quarterLength
 
 
 def select_chord_type(chord):
@@ -181,10 +215,11 @@ def select_chord_pitch(chord):
     # List of arrays for notes
     # This effects pitch range to ensure notes
     # are still in correct order for chord type
-    noteA = ["A", "B"]
-    noteB = ["G", "G#", "F", "F#"]
+    noteA = ["A", "B", "E"]
+    noteB = ["F", "F#"]
+    noteC = ["C", "C#", "D"]
     # Kept as reference
-    noteC = ["C", "C#", "D", "E"]
+    noteD = ["G", "G#"]
     # sn is starting note
     # Used as reference to ensure other
     # notes are higher pitch than sn
@@ -192,17 +227,22 @@ def select_chord_pitch(chord):
     if chord[0] in noteA:
         note = chord[0] + "2"
         new_chord.append(note)
-        i = 1
-        while i != 3:
+        if chord[0] == "E" or "E#":
+            note = chord[0] + "3"
+            new_chord.append(note)
+            note = chord[0] + "4"
+            new_chord.append(note)
+        else:
             num = random.randint(0, 1)
             if num == 0:
-                note = chord[i] + "3"
+                note = chord[1] + "3"
                 new_chord.append(note)
             else:
-                note = chord[i] + "4"
+                note = chord[1] + "4"
                 new_chord.append(note)
-            i += 1
-    elif chord in noteB:
+            note = chord[2] + "4"
+            new_chord.append(note)
+    elif chord[0] in noteB:
         num = random.randint(0, 1)
         if num == 0:
             note = chord[0] + "2"
@@ -222,13 +262,17 @@ def select_chord_pitch(chord):
             else:
                 note = chord[2] + "4"
                 new_chord.append(note)
-        else:
+        elif sn[-1] == "3":
             note = chord[1] + "3"
             new_chord.append(note)
             note = chord[2] + "4"
             new_chord.append(note)
-
-    else:
+        else:
+            note = chord[1] + "4"
+            new_chord.append(note)
+            note = chord[2] + "5"
+            new_chord.append(note)
+    elif chord[0] in noteC:
         num = random.randint(0, 2)
         if num == 0:
             note = chord[0] + "2"
@@ -249,16 +293,15 @@ def select_chord_pitch(chord):
                 new_chord.append(note)
                 x += 1
         elif sn[-1] == "3":
-            x = 1
-            for i in range(2):
-                num = random.randint(0, 1)
-                if num == 0:
-                    note = chord[x] + "3"
-                    new_chord.append(note)
-                else:
-                    note = chord[x] + "4"
-                    new_chord.append(note)
-                x += 1
+            note = chord[1] + "3"
+            new_chord.append(note)
+            num = random.randint(0, 1)
+            if num == 0:
+                note = chord[2] + "3"
+                new_chord.append(note)
+            else:
+                note = chord[2] + "4"
+                new_chord.append(note)
         elif sn[-1] == "2":
             x = 1
             for i in range(2):
@@ -300,5 +343,28 @@ def select_chord_pitch(chord):
                         note = chord[x] + "4"
                         new_chord.append(note)
                     x += 1
+    else:
+        num = random.randint(0, 1)
+        if num == 0:
+            note = chord[0] + "2"
+            new_chord.append(note)
+            if chord[1] == "B":
+                note = chord[1] + "2"
+                new_chord.append(note)
+            else:
+                note = chord[1] + "3"
+                new_chord.append(note)
+            note = chord[2] + "3"
+            new_chord.append(note)
+        else:
+            note = chord[0] + "3"
+            new_chord.append(note)
+            if chord[1] == "B":
+                note = chord[1] + "3"
+                new_chord.append(note)
+            else:
+                note = chord[1] + "4"
+                new_chord.append(note)
+            note = chord[2] + "4"
+            new_chord.append(note)
     return new_chord
-
