@@ -47,8 +47,12 @@ accomp_stream.append(bass_clef)
 
 def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit):
     accomp_key = get_accomp_key(key)
-    #generate_chord_accompaniment(chord_progression, accomp_key, accomp_rhythm, rest_limit)
-    generate_arpeggio_accomp(chord_progression, accomp_key)
+    for chord in chord_progression:
+        num = random.randint(0,1)
+        if num == 0:
+            generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit)
+        else:
+            generate_arpeggio_accomp(chord, accomp_key)
     return accomp_stream
 
 
@@ -112,58 +116,191 @@ def get_accomp_key(key):
     return chord_key
 
 
-def generate_chord_accompaniment(chord_progression, accomp_key, accomp_rhythm, rest_limit):
+def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit):
     # Counter for rhythm
     i = 0
-    for chord in chord_progression:
-        # Used to count duration in bar
-        x = 0
-        # Count for total rest duration per bar
-        rest_count = 0
-        # While there duration does not equal 4
-        while x != 4:
-            # Generate random number to decide between chord note and rest note
-            num = random.randint(0, 1)
-            # If num is 0 or rest_count plus current note duration is less than rest_limit
-            if num == 0 and rest_count + accomp_rhythm[i].quarterLength < rest_limit:
-                # Create new rest note
-                rest = music21.note.Rest()
-                # Assign rest the note duration
-                rest.duration = accomp_rhythm[i]
-                # Add the rest to the stream
-                accomp_stream.append(rest)
-                # Add note duration to rest_count
-                rest_count = rest_count + accomp_rhythm[i].quarterLength
-                # Add the note duration used to current duration in bar
-                x = x + accomp_rhythm[i].quarterLength
+    # Used to count duration in bar
+    x = 0
+    # Count for total rest duration per bar
+    rest_count = 0
+    # While there duration does not equal 4
+    while x != 4:
+        # Generate random number to decide between chord note and rest note
+        num = random.randint(0, 1)
+        # If num is 0 or rest_count plus current note duration is less than rest_limit
+        if num == 0 and rest_count + accomp_rhythm[i].quarterLength < rest_limit:
+            # Create new rest note
+            rest = music21.note.Rest()
+            # Assign rest the note duration
+            rest.duration = accomp_rhythm[i]
+            # Add the rest to the stream
+            accomp_stream.append(rest)
+            # Add note duration to rest_count
+            rest_count = rest_count + accomp_rhythm[i].quarterLength
+            # Add the note duration used to current duration in bar
+            x = x + accomp_rhythm[i].quarterLength
+        else:
+            if (chord-1) == len(accomp_key):
+                # Get chord notes pitch
+                chord_notes = select_chord_type(accomp_key[chord - 2])
+                # Print chord notes for testing purposes
+                print(chord_notes)
+                # Create new chord based off chord from chord progression
+                new_chord = music21.chord.Chord(chord_notes)
             else:
-                if (chord-1) == len(accomp_key):
-                    # Get chord notes pitch
-                    chord_notes = select_chord_type(accomp_key[chord - 2])
+                # Get chord notes pitch
+                chord_notes = select_chord_type(accomp_key[chord - 1])
+                # Print chord notes for testing purposes
+                print(chord_notes)
+                # Create new chord based off chord from chord progression
+                new_chord = music21.chord.Chord(chord_notes)
+            # Assign the chord the note duration
+            new_chord.duration = accomp_rhythm[i]
+            # Add the new chord to the stream
+            accomp_stream.append(new_chord)
+            # Add note duration used to current duration in bar
+            x = x + accomp_rhythm[i].quarterLength
+        # Increment position
+        i += 1
+
+
+def generate_arpeggio_accomp(chord, accomp_key):
+    num = random.randint(0, 1)
+    x = 0
+    noteA = ["F", "F#", "G", "G#"]
+    noteB = ["A", "B"]
+    if num == 0:
+        while x != 4:
+            num = random.randint(0, 2)
+            if (chord-1) == len(accomp_key):
+                # If num is 0, Add single arpeggio in ascending manner
+                if num == 0:
+                    # Get chord notes
+                    chord_notes = accomp_key[chord - 2]
                     # Print chord notes for testing purposes
                     print(chord_notes)
-                    # Create new chord based off chord from chord progression
-                    new_chord = music21.chord.Chord(chord_notes)
+                    pitch = random.randint(1, 4)
+                    for note in chord_notes:
+                        new_note = music21.note.Note(note + str(pitch))
+                        new_note.duration = music21.duration.Duration('eighth')
+                        if x + new_note.duration.quarterLength <= 4:
+                            accomp_stream.append(new_note)
+                            x = x + new_note.duration.quarterLength
+                # If num is 1, Add ascending arpeggio
+                elif num == 1:
+                    # Get chord notes
+                    chord_notes = accomp_key[chord - 2]
+                    # Print chord notes for testing purposes
+                    print(chord_notes)
+                    y = 1
+                    while x != 4:
+                        for note in chord_notes:
+                            new_note = music21.note.Note(note + str(y))
+                            new_note.duration = music21.duration.Duration('eighth')
+                            if x + new_note.duration.quarterLength <= 4:
+                                accomp_stream.append(new_note)
+                                x = x + new_note.duration.quarterLength
+                        y += 1
+                # Add descending arpeggio
                 else:
                     # Get chord notes pitch
-                    chord_notes = select_chord_type(accomp_key[chord - 1])
+                    chord_notes = accomp_key[chord - 2]
+                    new_chord = [chord_notes[0], chord_notes[2], chord_notes[1]]
+                    # Print new chord for testing purposes
+                    print(new_chord)
+                    y = 4
+                    while x != 4:
+                        if new_chord[0] in noteA:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                                    if new_note == new_chord[1]:
+                                        y -= 1
+                        elif new_chord[0] in noteB:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                            y -= 1
+                        else:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                                    if note == chord_notes[0]:
+                                        y -= 1
+            else:
+                # If num = 0, add single arpeggio
+                if num == 0:
+                    # Get chord notes
+                    chord_notes = accomp_key[chord - 1]
                     # Print chord notes for testing purposes
                     print(chord_notes)
-                    # Create new chord based off chord from chord progression
-                    new_chord = music21.chord.Chord(chord_notes)
-                # Assign the chord the note duration
-                new_chord.duration = accomp_rhythm[i]
-                # Add the new chord to the stream
-                accomp_stream.append(new_chord)
-                # Add note duration used to current duration in bar
-                x = x + accomp_rhythm[i].quarterLength
-            # Increment position
-            i += 1
-
-
-def generate_arpeggio_accomp(chord_progression, accomp_key):
-    for chord in chord_progression:
-        x = 0
+                    pitch = random.randint(1, 4)
+                    for note in chord_notes:
+                        new_note = music21.note.Note(note + str(pitch))
+                        new_note.duration = music21.duration.Duration('eighth')
+                        if x + new_note.duration.quarterLength <= 4:
+                            accomp_stream.append(new_note)
+                            x = x + new_note.duration.quarterLength
+                # If num is 1, add ascending arpeggio
+                elif num == 1:
+                    # Get chord notes
+                    chord_notes = accomp_key[chord - 2]
+                    # Print chord notes for testing purposes
+                    print(chord_notes)
+                    y = 1
+                    while x != 4:
+                        for note in chord_notes:
+                            new_note = music21.note.Note(note + str(y))
+                            new_note.duration = music21.duration.Duration('eighth')
+                            if x + new_note.duration.quarterLength <= 4:
+                                accomp_stream.append(new_note)
+                                x = x + new_note.duration.quarterLength
+                        y += 1
+                # Add descending arpeggio
+                else:
+                    # Get chord notes
+                    chord_notes = accomp_key[chord - 1]
+                    new_chord = [chord_notes[0], chord_notes[2], chord_notes[1]]
+                    # Print new chord for testing purposes
+                    print(new_chord)
+                    y = 4
+                    while x != 4:
+                        if new_chord[0] in noteA:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                                    if note == new_chord[1]:
+                                        y -= 1
+                        elif new_chord[0] in noteB:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                            y -= 1
+                        else:
+                            for note in new_chord:
+                                new_note = music21.note.Note(note + str(y))
+                                new_note.duration = music21.duration.Duration('eighth')
+                                if x + new_note.duration.quarterLength <= 4:
+                                    accomp_stream.append(new_note)
+                                    x = x + new_note.duration.quarterLength
+                                    if note == new_chord[0]:
+                                        y -= 1
+    else:
         while x != 4:
             if (chord-1) == len(accomp_key):
                 # Get chord notes pitch
