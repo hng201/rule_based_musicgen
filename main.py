@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # Generate rhythm for accompaniment
     accomp_rhythm = rhythm_gen.generate_note_duration(chord_progression)
     # Generate chord progression and assign the value to variable p_accomp
-    p_accomp = accomp_gen.generate_accompaniment(chord_progression, params.key, accomp_rhythm, params.accomp_rest_limit)
+    p_accomp = accomp_gen.generate_accompaniment(chord_progression, params.key, accomp_rhythm, params.accomp_rest_limit, params.accomp_type)
     # Generate rhythm for melody
     melody_rhythm = rhythm_gen.generate_note_duration(chord_progression)
     # Generate a melody and assign the value to variable p_melody
