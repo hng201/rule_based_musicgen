@@ -45,14 +45,21 @@ bass_clef = music21.clef.BassClef()
 accomp_stream.append(bass_clef)
 
 
-def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit):
+def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit, accomp_type):
     accomp_key = get_accomp_key(key)
-    for chord in chord_progression:
-        num = random.randint(0,1)
-        if num == 0:
+    if accomp_type == 0:
+        for chord in chord_progression:
             generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit)
-        else:
+    elif accomp_type == 1:
+        for chord in chord_progression:
             generate_arpeggio_accomp(chord, accomp_key)
+    else:
+        for chord in chord_progression:
+            num = random.randint(0, 1)
+            if num == 0:
+                generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit)
+            else:
+                generate_arpeggio_accomp(chord, accomp_key)
     return accomp_stream
 
 
