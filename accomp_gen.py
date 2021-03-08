@@ -179,6 +179,8 @@ def generate_arpeggio_accomp(chord, accomp_key):
     x = 0
     noteA = ["F", "F#", "G", "G#"]
     noteB = ["A", "B"]
+    duration = ['eighth', '16th']
+    value = random.choice(duration)
     while x != 4:
         num = random.randint(0, 2)
         if num == 0:
@@ -192,7 +194,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 pitch = random.randint(1, 4)
                 for note in chord_notes:
                     new_note = music21.note.Note(note + str(pitch))
-                    new_note.duration = music21.duration.Duration('eighth')
+                    new_note.duration = music21.duration.Duration(value)
                     if x + new_note.duration.quarterLength <= 4:
                         accomp_stream.append(new_note)
                         x = x + new_note.duration.quarterLength
@@ -205,7 +207,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 y = 1
                 for note in chord_notes:
                     new_note = music21.note.Note(note + str(y))
-                    new_note.duration = music21.duration.Duration('eighth')
+                    new_note.duration = music21.duration.Duration(value)
                     if x + new_note.duration.quarterLength <= 4:
                         accomp_stream.append(new_note)
                         x = x + new_note.duration.quarterLength
@@ -221,7 +223,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 if new_chord[0] in noteA:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
-                        new_note.duration = music21.duration.Duration('eighth')
+                        new_note.duration = music21.duration.Duration(value)
                         if x + new_note.duration.quarterLength <= 4:
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
@@ -230,7 +232,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 elif new_chord[0] in noteB:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
-                        new_note.duration = music21.duration.Duration('eighth')
+                        new_note.duration = music21.duration.Duration(value)
                         if x + new_note.duration.quarterLength <= 4:
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
@@ -238,7 +240,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 else:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
-                        new_note.duration = music21.duration.Duration('eighth')
+                        new_note.duration = music21.duration.Duration(value)
                         if x + new_note.duration.quarterLength <= 4:
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
@@ -251,7 +253,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
             print(chord_notes)
             for note in chord_notes:
                 new_note = music21.note.Note(note)
-                new_note.duration = music21.duration.Duration('eighth')
+                new_note.duration = music21.duration.Duration(value)
                 if x + new_note.duration.quarterLength <= 4:
                     accomp_stream.append(new_note)
                     x = x + new_note.duration.quarterLength
