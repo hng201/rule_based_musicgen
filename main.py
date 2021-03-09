@@ -29,4 +29,6 @@ if __name__ == '__main__':
     stream.append(p_accomp)
     # Show the stream in MusicXML format
     stream.show()
+    # Line below is for midi output, this only provides the audio
+    # stream.show('midi')
 
