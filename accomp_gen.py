@@ -260,10 +260,8 @@ def generate_arpeggio_accomp(chord, accomp_key):
         else:
             rest = music21.note.Rest()
             if 4 - x >= 2:
-                num = random.randint(0, 2)
+                num = random.randint(0, 1)
                 if num == 0:
-                    rest.duration = music21.duration.Duration('eighth')
-                elif num == 1:
                     rest.duration = music21.duration.Duration('quarter')
                 else:
                     rest.duration = music21.duration.Duration('half')
@@ -273,8 +271,14 @@ def generate_arpeggio_accomp(chord, accomp_key):
                     rest.duration = music21.duration.Duration('eighth')
                 else:
                     rest.duration = music21.duration.Duration('quarter')
+            elif 4 - x >= 0.5:
+                num = random.randint(0, 1)
+                if num == 0:
+                    rest.duration = music21.duration.Duration('16th')
+                else:
+                    rest.duration = music21.duration.Duration('eighth')
             else:
-                rest.duration = music21.duration.Duration('eighth')
+                rest.duration = music21.duration.Duration('16th')
             accomp_stream.append(rest)
             x = x + rest.duration.quarterLength
 
