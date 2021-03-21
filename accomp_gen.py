@@ -177,8 +177,6 @@ def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit):
 
 def generate_arpeggio_accomp(chord, accomp_key):
     x = 0
-    noteA_descend = ["F", "F#", "G", "G#", "D"]
-    noteB_descend = ["A", "B"]
     duration = ['eighth', '16th']
     value = random.choice(duration)
     while x != 4:
@@ -193,7 +191,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 y = random.randint(2, 3)
                 # Print chord notes for testing purposes
                 print(chord_notes)
-                if chord_notes[0] == 'B':
+                if chord_notes[0] in ['A', 'B']:
                     for note in chord_notes:
                         if i == 1:
                             y = y + 1
@@ -216,7 +214,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                 # Print new chord for testing purposes
                 print(new_chord)
                 y = random.randint(2, 4)
-                if new_chord[0] in noteA_descend:
+                if new_chord[0] in ["F", "F#", "G", "G#", "D"]:
                     for note in new_chord:
                         if i == 2:
                             y = y - 1
@@ -226,7 +224,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
                             i += 1
-                elif new_chord[0] in noteB_descend:
+                elif new_chord[0] in ["A", "B"]:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
                         new_note.duration = music21.duration.Duration(value)
