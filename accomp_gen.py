@@ -182,7 +182,7 @@ def generate_arpeggio_accomp(chord, accomp_key):
     duration = ['eighth', '16th']
     value = random.choice(duration)
     while x != 4:
-        num = 0
+        num = random.randint(0, 2)
         if num == 0:
             num = random.randint(0, 1)
             # Get chord notes
