@@ -177,66 +177,72 @@ def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit):
 
 def generate_arpeggio_accomp(chord, accomp_key):
     x = 0
-    noteA = ["F", "F#", "G", "G#"]
-    noteB = ["A", "B"]
+    noteA_descend = ["F", "F#", "G", "G#", "D"]
+    noteB_descend = ["A", "B"]
     duration = ['eighth', '16th']
     value = random.choice(duration)
     while x != 4:
-        num = random.randint(0, 2)
+        num = 0
         if num == 0:
-            num = random.randint(0, 2)
-            # If num is 0, Add single arpeggio in ascending manner
+            num = random.randint(0, 1)
+            # Get chord notes
+            chord_notes = accomp_key[chord]
+            i = 0
+            # If num is 0, Add single arpeggio in an ascending manner
             if num == 0:
-                # Get chord notes
-                chord_notes = accomp_key[chord]
+                y = random.randint(2, 3)
                 # Print chord notes for testing purposes
                 print(chord_notes)
-                pitch = random.randint(1, 4)
-                for note in chord_notes:
-                    new_note = music21.note.Note(note + str(pitch))
-                    new_note.duration = music21.duration.Duration(value)
-                    if x + new_note.duration.quarterLength <= 4:
-                        accomp_stream.append(new_note)
-                        x = x + new_note.duration.quarterLength
-            # If num is 1, Add ascending arpeggio
-            elif num == 1:
-                # Get chord notes
-                chord_notes = accomp_key[chord]
-                # Print chord notes for testing purposes
-                print(chord_notes)
-                y = 1
-                for note in chord_notes:
-                    new_note = music21.note.Note(note + str(y))
-                    new_note.duration = music21.duration.Duration(value)
-                    if x + new_note.duration.quarterLength <= 4:
-                        accomp_stream.append(new_note)
-                        x = x + new_note.duration.quarterLength
-                y += 1
-            # Add descending arpeggio
+                if chord_notes[0] == 'B':
+                    for note in chord_notes:
+                        if i == 1:
+                            y = y + 1
+                        new_note = music21.note.Note(note + str(y))
+                        new_note.duration = music21.duration.Duration(value)
+                        if x + new_note.duration.quarterLength <= 4:
+                            accomp_stream.append(new_note)
+                            x = x + new_note.duration.quarterLength
+                            i += 1
+                else:
+                    for note in chord_notes:
+                        new_note = music21.note.Note(note + str(y))
+                        new_note.duration = music21.duration.Duration(value)
+                        if x + new_note.duration.quarterLength <= 4:
+                            accomp_stream.append(new_note)
+                            x = x + new_note.duration.quarterLength
+            # Add descending arpeggio starting on root note
             else:
-                # Get chord notes pitch
-                chord_notes = accomp_key[chord]
                 new_chord = [chord_notes[0], chord_notes[2], chord_notes[1]]
                 # Print new chord for testing purposes
                 print(new_chord)
-                y = 4
-                if new_chord[0] in noteA:
+                y = random.randint(2, 4)
+                if new_chord[0] in noteA_descend:
+                    for note in new_chord:
+                        if i == 2:
+                            y = y - 1
+                        new_note = music21.note.Note(note + str(y))
+                        new_note.duration = music21.duration.Duration(value)
+                        if x + new_note.duration.quarterLength <= 4:
+                            accomp_stream.append(new_note)
+                            x = x + new_note.duration.quarterLength
+                            i += 1
+                elif new_chord[0] in noteB_descend:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
                         new_note.duration = music21.duration.Duration(value)
                         if x + new_note.duration.quarterLength <= 4:
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
-                            if new_note == new_chord[1]:
-                                y -= 1
-                elif new_chord[0] in noteB:
+                elif new_chord[0] == 'D':
                     for note in new_chord:
+                        if i <= 1:
+                            y = y - 1
                         new_note = music21.note.Note(note + str(y))
                         new_note.duration = music21.duration.Duration(value)
                         if x + new_note.duration.quarterLength <= 4:
                             accomp_stream.append(new_note)
                             x = x + new_note.duration.quarterLength
-                    y -= 1
+                            i += 1
                 else:
                     for note in new_chord:
                         new_note = music21.note.Note(note + str(y))
