@@ -326,9 +326,9 @@ def select_chord_pitch(chord):
         note = chord[0] + "2"
         new_chord.append(note)
         if chord[0] == "E" or "E#":
-            note = chord[0] + "3"
+            note = chord[1] + "3"
             new_chord.append(note)
-            note = chord[0] + "4"
+            note = chord[2] + "4"
             new_chord.append(note)
         else:
             num = random.randint(0, 1)
