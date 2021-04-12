@@ -106,55 +106,28 @@ def choose_note(chord_progression, melody_rhythm, notes, rest_limit):
                 if x == 0:
                     # Select a random triad note
                     note = random.choice([chord - 1, chord + 1, chord + 3])
-                    # If the note value is greater than 6
-                    if note > 6:
-                        # Minus 6 to get the note value
-                        # This is to ensure note value is not out of bound of array
-                        note = note - 6
-                    # Create a new note
-                    new_note = music21.note.Note(notes[note])
-                    # Assign the new note a duration
-                    new_note.duration = melody_rhythm[i]
-                    # Add note to melody stream
-                    melody_stream.append(new_note)
-                    # Assign current note to note value
-                    current_note = note
-                    # Add note duration used to current note duration in bar
-                    x = x + melody_rhythm[i].quarterLength
                 # If the current note value is odd/ is a passing note
                 elif current_note % 2 > 0:
                     # Select a note above or below the current note
                     note = random.choice([current_note - 1, current_note + 1])
                     # If note value is greater than 6
-                    if note > 6:
-                        # Minus 6 to get note value
-                        note = note - 6
-                    # Create new note
-                    new_note = music21.note.Note(notes[note])
-                    # Assign new note a duration
-                    new_note.duration = melody_rhythm[i]
-                    # Add new note to melody stream
-                    melody_stream.append(new_note)
-                    # Assign current note to note value
-                    current_note = note
-                    # Add note duration used to current note duration in bar
-                    x = x + melody_rhythm[i].quarterLength
                 else:
                     # Select a random note
                     note = random.choice(note_choices)
-                    # If note value is greater than 6
-                    if note > 6:
-                        # Minus 6 to get note value
-                        note = note - 6
-                    # Create new note
-                    new_note = music21.note.Note(notes[note])
-                    # Assign new note a duration
-                    new_note.duration = melody_rhythm[i]
-                    # Add new note to melody stream
-                    melody_stream.append(new_note)
-                    # Assign current note to note value
-                    current_note = note
-                    # Add note duration used to current note duration in bar
-                    x = x + melody_rhythm[i].quarterLength
+                # If the note value is greater than 6
+                if note > 6:
+                    # Minus 6 to get the note value
+                    # This is to ensure note value is not out of bound of array
+                    note = note - 6
+                # Create a new note
+                new_note = music21.note.Note(notes[note])
+                # Assign the new note a duration
+                new_note.duration = melody_rhythm[i]
+                # Add note to melody stream
+                melody_stream.append(new_note)
+                # Assign current note to note value
+                current_note = note
+                # Add note duration used to current note duration in bar
+                x = x + melody_rhythm[i].quarterLength
             # Increment position
             i += 1
