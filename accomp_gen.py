@@ -47,13 +47,14 @@ accomp_stream.append(bass_clef)
 
 def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit, accomp_type):
     accomp_key = get_accomp_key(key)
+    rhythm_counter = 0
     if accomp_type == 0:
         for chord in chord_progression:
             if (chord-1) == len(accomp_key):
                 chord = chord - 2
             else:
                 chord = chord - 1
-            generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit)
+            rhythm_counter = generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit, rhythm_counter)
     elif accomp_type == 1:
         for chord in chord_progression:
             if (chord - 1) == len(accomp_key):
@@ -69,7 +70,7 @@ def generate_accompaniment(chord_progression, key, accomp_rhythm, rest_limit, ac
                 chord = chord - 1
             num = random.randint(0, 1)
             if num == 0:
-                generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit)
+                rhythm_counter = generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit, rhythm_counter)
             else:
                 generate_arpeggio_accomp(chord, accomp_key)
     return accomp_stream
@@ -135,9 +136,8 @@ def get_accomp_key(key):
     return chord_key
 
 
-def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit):
-    # Counter for rhythm
-    i = 0
+def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit, rhythm_counter):
+    i = rhythm_counter
     # Used to count duration in bar
     x = 0
     # Count for total rest duration per bar
@@ -173,6 +173,7 @@ def generate_chord_accompaniment(chord, accomp_key, accomp_rhythm, rest_limit):
             x = x + accomp_rhythm[i].quarterLength
         # Increment position
         i += 1
+    return i
 
 
 def generate_arpeggio_accomp(chord, accomp_key):
